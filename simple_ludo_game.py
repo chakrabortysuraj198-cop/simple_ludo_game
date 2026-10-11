@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 
+# Simple Ludo game for 2 to 4 local players.
+# Each player has one token to keep the code beginner-friendly.
 
 COLORS = ["red", "green", "blue", "gold"]
 PLAYER_NAMES = ["Red", "Green", "Blue", "Yellow"]
@@ -63,6 +65,7 @@ class LudoGame:
         self.update_status()
 
     def track_point(self, position):
+        # Draw a simple loop-shaped track with 40 spaces.
         import math
         angle = (2 * math.pi * position / TRACK_LENGTH) - math.pi / 2
         cx, cy = 300, 195
@@ -73,6 +76,7 @@ class LudoGame:
         self.canvas.delete("all")
         self.canvas.create_text(300, 20, text="LUDO", font=("Arial", 18, "bold"), fill="#333333")
 
+        # Draw the track
         for i in range(TRACK_LENGTH):
             x, y = self.track_point(i)
             r = 12
@@ -80,6 +84,7 @@ class LudoGame:
                                     outline="#555555", width=1)
             self.canvas.create_text(x, y, text=str(i+1), font=("Arial", 7), fill="#555555")
 
+        # Home areas and token positions
         home_spots = [(65, 70), (535, 70), (65, 320), (535, 320)]
         for i in range(self.player_count.get()):
             hx, hy = home_spots[i]
@@ -92,6 +97,7 @@ class LudoGame:
                 self.canvas.create_oval(hx-12, hy-12, hx+12, hy+12,
                                          fill="white", outline=color, width=4)
 
+        # Draw tokens on the track
         for i, pos in enumerate(self.positions):
             if pos >= 0:
                 x, y = self.track_point(pos)
@@ -148,6 +154,7 @@ class LudoGame:
             messagebox.showinfo("Ludo", f"{PLAYER_NAMES[self.current]} wins!")
             return
 
+        # A roll of 6 gives another turn; otherwise pass to next player.
         rolled_six = self.dice_value == 6
         self.dice_value = None
         self.dice_label.config(text="Dice: -")
